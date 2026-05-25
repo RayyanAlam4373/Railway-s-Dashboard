@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build artifacts
+.next/
+out/
+dist/
+build/
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js
+apps/web/.next/
+apps/web/next-env.d.ts
+apps/web/.turbo/
+
+# TypeScript
+*.tsbuildinfo
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
