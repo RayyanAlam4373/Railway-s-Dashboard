@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 type Props = {
   // Full path of the xlsx export endpoint, e.g. "/api/export/dashboard/executive".
@@ -26,7 +26,7 @@ export function ExportPrintActions({
     <div className="flex items-center gap-2 print:hidden">
       <a
         href={href}
-        className="inline-flex h-7 items-center rounded-md border bg-card px-2.5 text-[0.8rem] font-medium text-foreground hover:bg-muted"
+        className={buttonVariants({ variant: "outline", size: "sm" })}
         download
       >
         Export xlsx

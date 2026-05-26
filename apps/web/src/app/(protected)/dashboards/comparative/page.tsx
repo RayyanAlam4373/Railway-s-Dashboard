@@ -141,7 +141,19 @@ export default async function ComparativeDashboardPage({ searchParams }: PagePro
       key: "freight_delta_pct",
       label: "Δ %",
       align: "right",
-      render: (r) => fmtPct(r.freight_delta_pct),
+      render: (r) => (
+        <span
+          className={
+            r.freight_delta_pct === null || r.freight_delta_pct === 0
+              ? ""
+              : r.freight_delta_pct > 0
+                ? "text-emerald-600 dark:text-emerald-400"
+                : "text-destructive"
+          }
+        >
+          {fmtPct(r.freight_delta_pct)}
+        </span>
+      ),
     },
   ];
 

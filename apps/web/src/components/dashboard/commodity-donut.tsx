@@ -4,10 +4,9 @@ import type { EChartsOption } from "echarts";
 import { useMemo } from "react";
 import { ChartShell, CHART_COLORS, baseOption } from "./chart-shell";
 import { fmtMillion } from "@/lib/dashboard/format";
-import type { CommodityContribution } from "@/lib/dashboard/types";
 
 type Props = {
-  data: CommodityContribution[];
+  data: { commodity: string; freight: number }[];
 };
 
 export function CommodityDonut({ data }: Props) {
@@ -34,30 +33,34 @@ export function CommodityDonut({ data }: Props) {
         },
       },
       legend: {
-        orient: "vertical",
-        right: 8,
-        top: "middle",
+        type: "scroll",
+        orient: "horizontal",
+        bottom: 0,
+        left: "center",
         textStyle: { fontSize: 11, color: "#475569" },
         itemHeight: 8,
         itemWidth: 8,
+        pageIconSize: 10,
+        pageTextStyle: { fontSize: 10, color: "#64748b" },
       },
       graphic: {
         type: "text",
-        left: "27%",
-        top: "center",
+        left: "center",
+        top: "38%",
         style: {
           text: fmtMillion(total),
           fill: "#0f172a",
           font: "600 16px var(--font-geist-sans), Inter, sans-serif",
           textAlign: "center",
+          textVerticalAlign: "middle",
         },
       },
       series: [
         {
           name: "Freight",
           type: "pie",
-          radius: ["55%", "78%"],
-          center: ["27%", "50%"],
+          radius: ["45%", "65%"],
+          center: ["50%", "42%"],
           avoidLabelOverlap: true,
           itemStyle: {
             borderRadius: 3,

@@ -28,7 +28,24 @@ export default async function AlertsPage({ searchParams }: PageProps) {
   const session = await requireSession();
   const sp = await searchParams;
   const scope = sp.scope === "all" ? "all" : "active";
-  const alerts = await listAlerts(scope);
+
+  let alerts: AlertRow[] = [];
+  let loadError: { message: string; hint: string | null } | null = null;
+  try {
+    alerts = await listAlerts(scope);
+  } catch (err) {
+    console.error("[alerts] failed to load:", err);
+    const e = err as { message?: string; code?: string; hint?: string };
+    const message = e?.message ?? "Unknown error loading alerts.";
+    const missingTable =
+      e?.code === "42P01" || /relation .*alerts.* does not exist/i.test(message);
+    loadError = {
+      message,
+      hint: missingTable
+        ? "The alerts table is missing. Run supabase/migrations/0005_audit_log_insert_policy.sql, 0006_fix_rls_recursion.sql, and 0007_alerts.sql in the Supabase SQL Editor."
+        : (e?.hint ?? null),
+    };
+  }
 
   const canAck = canWriteFacts(session.role);
   const grouped = groupByType(alerts);
@@ -49,7 +66,24 @@ export default async function AlertsPage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      {alerts.length === 0 ? (
+      {loadError ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Couldn&apos;t load alerts</CardTitle>
+            <CardDescription>
+              The server hit an error querying the alerts table.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm">
+            <p className="font-mono text-xs text-destructive">
+              {loadError.message}
+            </p>
+            {loadError.hint && (
+              <p className="text-muted-foreground">{loadError.hint}</p>
+            )}
+          </CardContent>
+        </Card>
+      ) : alerts.length === 0 ? (
         <Card>
           <CardHeader>
             <CardTitle>All clear</CardTitle>

@@ -10,13 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { CommodityDonut } from "@/components/dashboard/commodity-donut";
 import { FreightTrendChart } from "@/components/dashboard/freight-trend-chart";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import {
   TotalsTable,
   type TotalsColumn,
 } from "@/components/dashboard/totals-table";
-import { TreemapChart } from "@/components/dashboard/treemap-chart";
 import { YearFilter } from "@/components/dashboard/year-filter";
 import { ExportPrintActions } from "@/components/export-print-actions";
 import { requireSession } from "@/lib/auth/session";
@@ -150,12 +150,11 @@ export default async function CoalDashboardPage({ searchParams }: PageProps) {
             <CardDescription>YSW, AKDD, Other.</CardDescription>
           </CardHeader>
           <CardContent>
-            <TreemapChart
+            <CommodityDonut
               data={subcategories.map((s) => ({
-                name: s.commodity,
-                value: s.freight,
+                commodity: s.commodity.replace(/^Coal\s*\/\s*/i, ""),
+                freight: s.freight,
               }))}
-              height={300}
             />
           </CardContent>
         </Card>

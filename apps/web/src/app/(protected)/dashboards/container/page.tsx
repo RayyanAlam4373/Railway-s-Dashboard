@@ -35,6 +35,20 @@ function resolveFiscalYear(
   return available[0];
 }
 
+function topPartnersWithOther(
+  partners: PartnerTotal[],
+  topN: number,
+): { name: string; value: number }[] {
+  const sorted = [...partners]
+    .filter((p) => p.freight > 0)
+    .sort((a, b) => b.freight - a.freight);
+  const top = sorted.slice(0, topN);
+  const restTotal = sorted.slice(topN).reduce((s, p) => s + p.freight, 0);
+  const result = top.map((p) => ({ name: p.party, value: p.freight }));
+  if (restTotal > 0) result.push({ name: "Other", value: restTotal });
+  return result;
+}
+
 export default async function ContainerDashboardPage({
   searchParams,
 }: PageProps) {
@@ -122,12 +136,14 @@ export default async function ContainerDashboardPage({
         <Card>
           <CardHeader>
             <CardTitle>Partner share</CardTitle>
-            <CardDescription>Treemap of freight by partner.</CardDescription>
+            <CardDescription>
+              Top 8 partners by freight; smaller partners grouped as Other.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <TreemapChart
-              data={partners.map((p) => ({ name: p.party, value: p.freight }))}
-              height={320}
+              data={topPartnersWithOther(partners, 8)}
+              height={360}
             />
           </CardContent>
         </Card>
