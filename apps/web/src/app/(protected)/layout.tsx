@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { AlertBell } from "@/components/alert-bell";
-import { NavLinks } from "@/components/nav-links";
+import { MobileNav, NavLinks } from "@/components/nav-links";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { requireSession, type UserRole } from "@/lib/auth/session";
@@ -25,13 +25,16 @@ export default async function ProtectedLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b bg-card print:hidden">
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded bg-primary" />
-            <span className="text-sm font-semibold tracking-tight">
-              PR Freight Intelligence
-            </span>
-          </Link>
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-2 px-4 sm:px-6">
+          <div className="flex items-center gap-2">
+            <MobileNav />
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <div className="h-6 w-6 rounded bg-primary" />
+              <span className="text-sm font-semibold tracking-tight">
+                PR Freight Intelligence
+              </span>
+            </Link>
+          </div>
           <NavLinks />
           <div className="flex items-center gap-3">
             <AlertBell />
